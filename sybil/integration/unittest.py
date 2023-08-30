@@ -13,10 +13,10 @@ class TestCase(BaseTestCase):
         BaseTestCase.__init__(self)
         self.example = example
 
-    def runTest(self):
+    def runTest(self) -> None:
         self.example.evaluate()
 
-    def id(self):
+    def id(self) -> str:
         return '{},line:{},column:{}'.format(
             self.example.path, self.example.line, self.example.column
         )
@@ -24,12 +24,12 @@ class TestCase(BaseTestCase):
     __str__ = __repr__ = id
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         if cls.sybil.setup is not None:
             cls.sybil.setup(cls.namespace)
 
     @classmethod
-    def tearDownClass(cls):
+    def tearDownClass(cls) -> None:
         if cls.sybil.teardown is not None:
             cls.sybil.teardown(cls.namespace)
 

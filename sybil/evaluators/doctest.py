@@ -1,3 +1,5 @@
+from typing import List
+
 from doctest import (
     DocTest as BaseDocTest,
     DocTestRunner as BaseDocTestRunner,
@@ -24,7 +26,7 @@ class DocTestRunner(BaseDocTestRunner):
             optionflags=optionflags,
         )
 
-    def _failure_header(self, test, example):
+    def _failure_header(self, test, example) -> str:
         return ''
 
 
@@ -45,7 +47,7 @@ class DocTestEvaluator:
     def __call__(self, sybil_example: Example) -> str:
         example = sybil_example.parsed
         namespace = sybil_example.namespace
-        output = []
+        output: List[str] = []
         remove_name = False
         try:
             if '__name__' not in namespace:

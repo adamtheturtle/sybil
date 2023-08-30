@@ -70,12 +70,12 @@ class SybilItem(pytest.Item):
         if cls is Session:
             return self.session
 
-    def setup(self):
+    def setup(self) -> None:
         self._request._fillfixtures()
         for name, fixture in self.funcargs.items():
             self.example.namespace[name] = fixture
 
-    def runtest(self):
+    def runtest(self) -> None:
         self.example.evaluate()
 
     if PYTEST_VERSION >= (7, 4, 0):
@@ -117,11 +117,11 @@ class SybilFile(pytest.File):
         for example in self.document:
             yield SybilItem.from_parent(self, sybil=self.sybil, example=example)
 
-    def setup(self):
+    def setup(self) -> None:
         if self.sybil.setup:
             self.sybil.setup(self.document.namespace)
 
-    def teardown(self):
+    def teardown(self) -> None:
         if self.sybil.teardown:
             self.sybil.teardown(self.document.namespace)
 
