@@ -282,7 +282,7 @@ def test_skips(tmpdir: local, capsys: CaptureFixture[str], runner: str) -> None:
     assert results.errors == 0, results.out.text
 
 
-def clone_and_run_modules_tests(tmpdir: local, capsys: CaptureFixture[str], runner: str) -> None:
+def clone_and_run_modules_tests(tmpdir: local, capsys: CaptureFixture[str], runner: str):
     clone_functional_sample('modules', tmpdir)
     write_config(tmpdir, runner,
                  path="'./modules'",
