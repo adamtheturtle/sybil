@@ -63,12 +63,12 @@ def parse_for(letter, document):
                      partial(check, letter))
 
 
-def sybil_setup(namespace):
+def sybil_setup(namespace) -> None:
     print('sybil setup', end=' ')
     namespace['x'] = 0
 
 
-def sybil_teardown(namespace):
+def sybil_teardown(namespace) -> None:
     print('sybil teardown', namespace['x'])
 
 

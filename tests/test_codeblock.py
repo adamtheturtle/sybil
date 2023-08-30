@@ -39,7 +39,7 @@ def test_basic() -> None:
 
 def test_other_language_composition_pass() -> None:
 
-    def oh_hai(example):
+    def oh_hai(example) -> None:
         assert isinstance(example, Example)
         assert 'HAI' in example.parsed
 
