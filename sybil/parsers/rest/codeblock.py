@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sybil.evaluators.python import pad, PythonEvaluator
 from sybil.parsers.abstract import AbstractCodeBlockParser
 from sybil.parsers.rest.lexers import DirectiveLexer, DirectiveInCommentLexer
@@ -16,7 +18,7 @@ class CodeBlockParser(AbstractCodeBlockParser):
         You can also override the :meth:`evaluate` method below.
     """
 
-    def __init__(self, language: str = None, evaluator: Evaluator = None) -> None:
+    def __init__(self, language: Optional[str] = None, evaluator: Optional[Evaluator] = None) -> None:
         super().__init__(
             [
                 DirectiveLexer(directive=r'code-block'),

@@ -69,7 +69,7 @@ class LolCodeCodeBlockParser(CodeBlockParser):
 
     language = 'lolcode'
 
-    def evaluate(self, example: Example):
+    def evaluate(self, example: Example) -> None:
         if example.parsed != 'HAI\n':
             raise ValueError(repr(example.parsed))
 

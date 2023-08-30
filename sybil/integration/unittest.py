@@ -36,7 +36,7 @@ class TestCase(BaseTestCase):
 
 def unittest_integration(*sybils: 'Sybil'):
 
-    def load_tests(loader=None, tests=None, pattern=None):
+    def load_tests(loader=None, tests=None, pattern=None) -> TestSuite:
         suite = TestSuite()
         for sybil in sybils:
             for path in sorted(sybil.path.glob('**/*')):
