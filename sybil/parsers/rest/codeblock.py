@@ -16,7 +16,7 @@ class CodeBlockParser(AbstractCodeBlockParser):
         You can also override the :meth:`evaluate` method below.
     """
 
-    def __init__(self, language: str = None, evaluator: Evaluator = None):
+    def __init__(self, language: str = None, evaluator: Evaluator = None) -> None:
         super().__init__(
             [
                 DirectiveLexer(directive=r'code-block'),
@@ -38,5 +38,5 @@ class PythonCodeBlockParser(CodeBlockParser):
         in each of the examples found by this parser.
     """
 
-    def __init__(self, future_imports=()):
+    def __init__(self, future_imports=()) -> None:
         super().__init__(language='python', evaluator=PythonEvaluator(future_imports))

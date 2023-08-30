@@ -27,7 +27,7 @@ example_module_path = abspath(getsourcefile(example))
 
 class SybilFailureRepr(TerminalRepr):
 
-    def __init__(self, item, message):
+    def __init__(self, item, message) -> None:
         self.item = item
         self.message = message
 
@@ -42,7 +42,7 @@ class SybilFailureRepr(TerminalRepr):
 
 class SybilItem(pytest.Item):
 
-    def __init__(self, parent, sybil, example):
+    def __init__(self, parent, sybil, example) -> None:
         name = 'line:{},column:{}'.format(example.line, example.column)
         super(SybilItem, self).__init__(name, parent)
         self.example = example
@@ -108,7 +108,7 @@ class SybilItem(pytest.Item):
 
 class SybilFile(pytest.File):
 
-    def __init__(self, *, sybil: 'Sybil', **kwargs):
+    def __init__(self, *, sybil: 'Sybil', **kwargs) -> None:
         super(SybilFile, self).__init__(**kwargs)
         self.sybil: 'Sybil' = sybil
 

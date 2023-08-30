@@ -9,7 +9,7 @@ class TestCase(BaseTestCase):
 
     sybil = namespace = None
 
-    def __init__(self, example):
+    def __init__(self, example) -> None:
         BaseTestCase.__init__(self)
         self.example = example
 
