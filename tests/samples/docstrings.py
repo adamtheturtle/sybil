@@ -1,10 +1,10 @@
-def r_prefixed_docstring():
+def r_prefixed_docstring() -> None:
     r"""
     Wat? Why?!
     """
 
 
-def function_with_codeblock_in_middle(text):
+def function_with_codeblock_in_middle(text) -> None:
     """
     My comment
 
@@ -16,7 +16,7 @@ def function_with_codeblock_in_middle(text):
     assert text == 'Hello World'
 
 
-def function_with_single_line_codeblock_at_end(text):
+def function_with_single_line_codeblock_at_end(text) -> None:
     """
     My comment
 
@@ -26,7 +26,7 @@ def function_with_single_line_codeblock_at_end(text):
     assert text == 'Hello World'
 
 
-def function_with_multi_line_codeblock_at_end(text):
+def function_with_multi_line_codeblock_at_end(text) -> None:
     """
     My comment
 

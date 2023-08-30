@@ -9,6 +9,8 @@ from sybil import Example, Sybil
 from sybil.document import Document
 from sybil.parsers.codeblock import PythonCodeBlockParser, CodeBlockParser
 from .helpers import check_excinfo, parse, sample_path, check_path, SAMPLE_PATH, add_to_python_path
+import sybil.example
+from typing import Callable
 
 
 def test_basic() -> None:
@@ -82,7 +84,7 @@ def test_other_language_inheritance() -> None:
     assert str(excinfo.value) == "'KTHXBYE'"
 
 
-def future_import_checks(*future_imports):
+def future_import_checks(*future_imports) -> Callable:
     parser = PythonCodeBlockParser(future_imports)
     examples, namespace = parse('codeblock_future_imports.txt', parser, expected=3)
     with pytest.raises(Exception) as excinfo:
