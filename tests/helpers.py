@@ -105,7 +105,7 @@ TEST_OUTPUT_TEMPLATES = {
 
 class Finder:
 
-    def __init__(self, text) -> None:
+    def __init__(self, text: str) -> None:
         self.text = text
         self.index = 0
 
@@ -113,10 +113,10 @@ class Finder:
         assert substring in self.text[self.index:], self.text[self.index:]
         self.index = self.text.index(substring, self.index)
 
-    def assert_present(self, text) -> None:
+    def assert_present(self, text: str) -> None:
         assert text in self.text, f'{self.text}\n{self.text!r}'
 
-    def assert_not_present(self, text) -> None:
+    def assert_not_present(self, text: str) -> None:
         index = self.text.find(text)
         if index > -1:
             raise AssertionError('\n'+self.text[index-500:index+500])
