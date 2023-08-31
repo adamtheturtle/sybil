@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Iterator, Union, TYPE_CHECKING
+from typing import Iterator, Iterable, Union, TYPE_CHECKING
 
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
 from _pytest import fixtures
@@ -48,7 +48,7 @@ class SybilItem(pytest.Item):
         self.example = example
         self.request_fixtures(sybil.fixtures)
 
-    def request_fixtures(self, names):
+    def request_fixtures(self, names: Iterable[str]) -> None:
         # pytest fixtures dance:
         fm = self.session._fixturemanager
         closure = fm.getfixtureclosure(names, self)
@@ -118,11 +118,11 @@ class SybilFile(pytest.File):
             yield SybilItem.from_parent(self, sybil=self.sybil, example=example)
 
     def setup(self) -> None:
-        if self.sybil.setup:
+        if self.sybil.setup is not None:
             self.sybil.setup(self.document.namespace)
 
     def teardown(self) -> None:
-        if self.sybil.teardown:
+        if self.sybil.teardown is not None:
             self.sybil.teardown(self.document.namespace)
 
 
