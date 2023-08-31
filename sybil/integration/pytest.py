@@ -1,17 +1,18 @@
 from __future__ import absolute_import
 
+import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Iterator, Iterable, Union, TYPE_CHECKING
+from typing import Iterator, Tuple, Optional, Union, TYPE_CHECKING
 
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
 from _pytest import fixtures
 from _pytest.fixtures import FuncFixtureInfo
+from _pytest._io import TerminalWriter
 from _pytest.main import Session
 from _pytest.nodes import Collector
 from _pytest.python import Module
-import py.path
 import pytest
 
 from ..example import SybilFailure
@@ -22,7 +23,9 @@ if TYPE_CHECKING:
 
 PYTEST_VERSION = tuple(int(i) for i in pytest.__version__.split('.'))
 
-example_module_path = abspath(getsourcefile(example))
+source_file = getsourcefile(example)
+assert source_file is not None
+example_module_path = abspath(source_file)
 
 
 class SybilFailureRepr(TerminalRepr):
@@ -31,7 +34,7 @@ class SybilFailureRepr(TerminalRepr):
         self.item = item
         self.message = message
 
-    def toterminal(self, tw):
+    def toterminal(self, tw: TerminalWriter) -> None:
         tw.line()
         for line in self.message.splitlines():
             tw.line(line)
@@ -48,7 +51,7 @@ class SybilItem(pytest.Item):
         self.example = example
         self.request_fixtures(sybil.fixtures)
 
-    def request_fixtures(self, names: Iterable[str]) -> None:
+    def request_fixtures(self, names: tuple[str]) -> None:
         # pytest fixtures dance:
         fm = self.session._fixturemanager
         closure = fm.getfixtureclosure(names, self)
@@ -58,11 +61,11 @@ class SybilItem(pytest.Item):
         self.funcargs = {}
         self._request = fixtures.FixtureRequest(self, _ispytest=True)
 
-    def reportinfo(self):
+    def reportinfo(self) -> Tuple[Union["os.PathLike[str]", str], Optional[int], str]:
         info = '%s line=%i column=%i' % (
             self.fspath.basename, self.example.line, self.example.column
         )
-        return py.path.local(self.example.path), self.example.line, info
+        return self.example.path, self.example.line, info
 
     def getparent(self, cls):
         if cls is Module:
