@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Union, TYPE_CHECKING
+from typing import Iterator, Union, TYPE_CHECKING
 
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
 from _pytest import fixtures
@@ -42,7 +42,7 @@ class SybilFailureRepr(TerminalRepr):
 
 class SybilItem(pytest.Item):
 
-    def __init__(self, parent, sybil, example) -> None:
+    def __init__(self, parent, sybil: 'Sybil', example: example.Example) -> None:
         name = 'line:{},column:{}'.format(example.line, example.column)
         super(SybilItem, self).__init__(name, parent)
         self.example = example
@@ -112,7 +112,7 @@ class SybilFile(pytest.File):
         super(SybilFile, self).__init__(**kwargs)
         self.sybil: 'Sybil' = sybil
 
-    def collect(self):
+    def collect(self) -> Iterator[SybilItem]:
         self.document = self.sybil.parse(Path(self.fspath.strpath))
         for example in self.document:
             yield SybilItem.from_parent(self, sybil=self.sybil, example=example)
@@ -128,7 +128,7 @@ class SybilFile(pytest.File):
 
 def pytest_integration(*sybils: 'Sybil'):
 
-    def pytest_collect_file(file_path: Path, parent: Collector):
+    def pytest_collect_file(file_path: Path, parent: Collector) -> SybilFile:
         for sybil in sybils:
             if sybil.should_parse(file_path):
                 return SybilFile.from_parent(parent, path=file_path, sybil=sybil)

@@ -20,7 +20,7 @@ class Skip:
         self.restore_next = False
         self.reason = None
 
-    def __call__(self, example):
+    def __call__(self, example: Example):
         document = example.document
 
         if self.restore_next:
