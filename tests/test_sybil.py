@@ -29,14 +29,14 @@ class TestRegion:
 
 class TestExample:
 
-    def test_repr(self, document) -> None:
+    def test_repr(self, document: Document) -> None:
         region = Region(0, 1, 'parsed', 'evaluator')
         example = Example(document, 1, 2, region, {})
         assert (repr(example) ==
                 "<Example path=/the/path line=1 column=2 using 'evaluator'>")
 
-    def test_evaluate_okay(self, document) -> None:
-        def evaluator(example):
+    def test_evaluate_okay(self, document: Document) -> None:
+        def evaluator(example) -> None:
             example.namespace['parsed'] = example.parsed
         region = Region(0, 1, 'the data', evaluator)
         namespace = {}
@@ -44,7 +44,7 @@ class TestExample:
         example.evaluate()
         assert namespace == {'parsed': 'the data'}
 
-    def test_evaluate_not_okay(self, document) -> None:
+    def test_evaluate_not_okay(self, document: Document) -> None:
         def evaluator(example):
             return 'foo!'
         region = Region(0, 1, 'the data', evaluator)
@@ -58,7 +58,7 @@ class TestExample:
         assert excinfo.value.example is example
         assert excinfo.value.result == 'foo!'
 
-    def test_evaluate_raises_exception(self, document) -> None:
+    def test_evaluate_raises_exception(self, document: Document) -> None:
         def evaluator(example):
             raise ValueError('foo!')
         region = Region(0, 1, 'the data', evaluator)
@@ -70,26 +70,26 @@ class TestExample:
 
 class TestDocument:
 
-    def test_add(self, document) -> None:
+    def test_add(self, document: Document) -> None:
         region = Region(0, 1, None, None)
         document.add(region)
         assert [e.region for e in document] == [region]
 
-    def test_add_no_overlap(self, document) -> None:
+    def test_add_no_overlap(self, document: Document) -> None:
         region1 = Region(0, 1, None, None)
         region2 = Region(6, 8, None, None)
         document.add(region1)
         document.add(region2)
         assert [e.region for e in document] == [region1, region2]
 
-    def test_add_out_of_order(self, document) -> None:
+    def test_add_out_of_order(self, document: Document) -> None:
         region1 = Region(0, 1, None, None)
         region2 = Region(6, 8, None, None)
         document.add(region2)
         document.add(region1)
         assert [e.region for e in document] == [region1, region2]
 
-    def test_add_adjacent(self, document) -> None:
+    def test_add_adjacent(self, document: Document) -> None:
         region1 = Region(0, 1, None, None)
         region2 = Region(1, 2, None, None)
         region3 = Region(2, 3, None, None)
@@ -98,7 +98,7 @@ class TestDocument:
         document.add(region2)
         assert [e.region for e in document] == [region1, region2, region3]
 
-    def test_add_before_start(self, document) -> None:
+    def test_add_before_start(self, document: Document) -> None:
         region = Region(-1, 0, None, None)
         with pytest.raises(ValueError) as excinfo:
             document.add(region)
@@ -108,7 +108,7 @@ class TestDocument:
             'is before start of document'
         )
 
-    def test_add_after_end(self, document) -> None:
+    def test_add_after_end(self, document: Document) -> None:
         region = Region(len(document.text), len(document.text)+1, None, None)
         with pytest.raises(ValueError) as excinfo:
             document.add(region)
@@ -118,7 +118,7 @@ class TestDocument:
             'goes beyond end of document'
         )
 
-    def test_add_overlaps_with_previous(self, document) -> None:
+    def test_add_overlaps_with_previous(self, document: Document) -> None:
         region1 = Region(0, 2, None, None)
         region2 = Region(1, 3, None, None)
         document.add(region1)
@@ -131,7 +131,7 @@ class TestDocument:
             ' from line 1, column 2 to line 1, column 4'
         )
 
-    def test_add_at_same_place(self, document) -> None:
+    def test_add_at_same_place(self, document: Document) -> None:
         region1 = Region(0, 2, None, None)
         region2 = Region(0, 3, None, None)
         document.add(region1)
@@ -144,7 +144,7 @@ class TestDocument:
             ' from line 1, column 1 to line 1, column 3'
         )
 
-    def test_add_identical(self, document) -> None:
+    def test_add_identical(self, document: Document) -> None:
         region1 = Region(0, 2, None, None)
         region2 = Region(0, 2, None, None)
         document.add(region1)
@@ -157,7 +157,7 @@ class TestDocument:
             ' from line 1, column 1 to line 1, column 3'
         )
 
-    def test_add_overlaps_with_next(self, document) -> None:
+    def test_add_overlaps_with_next(self, document: Document) -> None:
         region1 = Region(0, 1, None, None)
         region2 = Region(1, 3, None, None)
         region3 = Region(2, 4, None, None)
