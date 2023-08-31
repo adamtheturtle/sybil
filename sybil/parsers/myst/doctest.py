@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from sybil import Document, Region
+from sybil import Document, LexedRegion
 from sybil.evaluators.doctest import DocTestEvaluator
 from sybil.parsers.abstract import DocTestStringParser
 from .lexers import DirectiveLexer
@@ -19,7 +19,7 @@ class DocTestDirectiveParser(DirectiveLexer):
         super().__init__('doctest')
         self.string_parser = DocTestStringParser(DocTestEvaluator(optionflags))
 
-    def __call__(self, document: Document) -> Iterable[Region]:
+    def __call__(self, document: Document) -> Iterable[LexedRegion]:
         for lexed_region in super().__call__(document):
             source = lexed_region.lexemes['source']
             for region in self.string_parser(source, document.path):

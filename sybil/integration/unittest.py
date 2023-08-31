@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Dict, Callable, Optional
 from unittest import TestCase as BaseTestCase, TestSuite
 from unittest.loader import TestLoader
 
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 class TestCase(BaseTestCase):
 
     sybil: 'Sybil'
-    namespace: dict[str, Any]
+    namespace: Dict[str, Any]
 
     def __init__(self, example: 'Example') -> None:
         BaseTestCase.__init__(self)

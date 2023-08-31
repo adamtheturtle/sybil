@@ -4,7 +4,7 @@ from ast import AsyncFunctionDef, FunctionDef, ClassDef, Module, Expr, Constant
 from bisect import bisect
 from io import open
 from pathlib import Path
-from typing import List, Iterator, Pattern, Tuple, Match, Optional, Sequence
+from typing import Any, Dict, List, Iterator, Pattern, Tuple, Match, Optional
 
 from .example import Example
 from .python import import_path
@@ -42,7 +42,7 @@ class Document:
         self.regions: List[Tuple[int, Region]] = []
         #: This dictionary is the namespace in which all examples parsed from
         #: this document will be evaluated.
-        self.namespace: dict = {}
+        self.namespace: Dict[str, Any] = {}
 
     @classmethod
     def parse(cls, path: str, *parsers: Parser, encoding: str = 'utf-8') -> 'Document':
