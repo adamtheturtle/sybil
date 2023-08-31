@@ -164,7 +164,7 @@ class PythonDocStringDocument(PythonDocument):
     """
 
     @staticmethod
-    def extract_docstrings(python_source_code: str) -> Sequence[Tuple[int, int, str]]:
+    def extract_docstrings(python_source_code: str) -> Iterator[Tuple[int, int, str]]:
         line_offsets = LineNumberOffsets(python_source_code)
         for node in ast.walk(ast.parse(python_source_code)):
             if not isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
