@@ -2,9 +2,14 @@ import inspect
 import sys
 from pathlib import Path
 from typing import Sequence, Callable, Collection, Mapping, Optional, Type, List
+from unittest import TestSuite
+from unittest.loader import TestLoader
+
+from _pytest.nodes import Collector
 
 from .document import Document, PythonDocStringDocument, PythonDocument
 from .typing import Parser
+from .integration.pytest import SybilFile
 
 PY37_AND_EARLIER = sys.version_info[:2] <= (3, 7)
 
@@ -114,7 +119,7 @@ class Sybil:
             self.document_types.update(document_types)
         self.default_document_type: Type[Document] = self.document_types[None]
 
-    def __add__(self, other: 'Sybil'):
+    def __add__(self, other: 'Sybil') -> 'SybilCollection':
         """
         :class:`Sybil` instances can be concatenated into a :class:`~sybil.sybil.SybilCollection`.
         """
@@ -143,14 +148,14 @@ class Sybil:
         type_ = self.document_types.get(path.suffix, self.default_document_type)
         return type_.parse(str(path), *self.parsers, encoding=self.encoding)
 
-    def pytest(self):
+    def pytest(self) -> Callable[[Path, Collector], SybilFile]:
         """
         The helper method for when you use :ref:`pytest_integration`.
         """
         from .integration.pytest import pytest_integration
         return pytest_integration(self)
 
-    def unittest(self):
+    def unittest(self) -> Callable[[Optional[TestLoader], Optional[TestSuite], Optional[str]], TestSuite]:
         """
         The helper method for when you use :ref:`unitttest_integration`.
         """
@@ -166,7 +171,7 @@ class SybilCollection(list):
     This allows multiple configurations to be used in a single test run.
     """
 
-    def pytest(self):
+    def pytest(self) -> Callable[[Path, Collector], SybilFile]:
         """
         The helper method for when you use :ref:`pytest_integration`.
         """

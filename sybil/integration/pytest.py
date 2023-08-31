@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Iterator, Tuple, Optional, Union, TYPE_CHECKING
+from typing import Callable, Iterator, Tuple, Optional, Union, TYPE_CHECKING
 
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
 from _pytest import fixtures
@@ -129,7 +129,7 @@ class SybilFile(pytest.File):
             self.sybil.teardown(self.document.namespace)
 
 
-def pytest_integration(*sybils: 'Sybil'):
+def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], SybilFile]:
 
     def pytest_collect_file(file_path: Path, parent: Collector) -> SybilFile:
         for sybil in sybils:

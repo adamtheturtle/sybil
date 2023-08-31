@@ -1,6 +1,6 @@
 import re
 import string
-from typing import Iterable
+from typing import Iterable, Iterator, Tuple
 from textwrap import dedent
 
 from sybil import Region, Document
@@ -11,7 +11,7 @@ CAPTURE_DIRECTIVE = re.compile(
 )
 
 
-def indent_matches(line, indent):
+def indent_matches(line: str, indent: str) -> bool:
     # Is the indentation of a line match what we're looking for?
 
     if not line.strip():
@@ -30,12 +30,12 @@ def indent_matches(line, indent):
 
 class DocumentReverseIterator(list):
 
-    def __init__(self, document) -> None:
+    def __init__(self, document: Document) -> None:
         self[:] = document.text.splitlines(keepends=True)
         self.current_line = len(self)
         self.current_line_end_position = len(document.text)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Tuple[int, str]]:
         while self.current_line > 0:
             self.current_line -= 1
             line = self[self.current_line]
