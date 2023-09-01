@@ -10,9 +10,10 @@ class If:
     def __init__(self, default_reason: str) -> None:
         self.default_reason = default_reason
 
-    def __call__(self, condition, reason: Optional[str] = None) -> str:
+    def __call__(self, condition, reason: Optional[str] = None) -> Optional[str]:
         if condition:
             return reason or self.default_reason
+        return None
 
 
 class Skip:
@@ -20,7 +21,7 @@ class Skip:
     def __init__(self, original_evaluator: Evaluator) -> None:
         self.original_evaluator = original_evaluator
         self.restore_next = False
-        self.reason = None
+        self.reason: Optional[str] = None
 
     def __call__(self, example: Example) -> None:
         document = example.document
