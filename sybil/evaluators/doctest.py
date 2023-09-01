@@ -3,6 +3,7 @@ from doctest import (
     DocTestRunner as BaseDocTestRunner,
     _unittest_reportflags,
 )
+from typing import List
 
 from sybil import Example
 
@@ -45,7 +46,7 @@ class DocTestEvaluator:
     def __call__(self, sybil_example: Example) -> str:
         example = sybil_example.parsed
         namespace = sybil_example.namespace
-        output = []
+        output: List[str] = []
         remove_name = False
         try:
             if '__name__' not in namespace:
