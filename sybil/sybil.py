@@ -99,7 +99,9 @@ class Sybil:
 
         self.parsers: Sequence[Parser] = parsers
         current_frame = inspect.currentframe()
+        assert current_frame is not None
         calling_frame = current_frame.f_back
+        assert calling_frame is not None
         calling_filename = inspect.getframeinfo(calling_frame).filename
         start_path = Path(calling_filename).parent / path
         self.path: Path = start_path.absolute()
@@ -110,8 +112,8 @@ class Sybil:
         if exclude:
             self.excludes.append(exclude)
         self.filenames = filenames
-        self.setup: Callable[[Dict[str, Any]], None] = setup
-        self.teardown: Callable[[Dict[str, Any]], None] = teardown
+        self.setup: Optional[Callable[[Dict[str, Any]], None]] = setup
+        self.teardown: Optional[Callable[[Dict[str, Any]], None]] = teardown
         self.fixtures: Sequence[str] = fixtures
         self.encoding: str = encoding
         self.document_types = DEFAULT_DOCUMENT_TYPES.copy()
@@ -163,7 +165,7 @@ class Sybil:
         return unittest_integration(self)
 
 
-class SybilCollection(list):
+class SybilCollection(list[Sybil]):
     """
     When :class:`Sybil` instances are concatenated, the collection returned can
     be used in the same way as a single :class:`Sybil`.
@@ -178,7 +180,7 @@ class SybilCollection(list):
         from .integration.pytest import pytest_integration
         return pytest_integration(*self)
 
-    def unittest(self):
+    def unittest(self) -> Callable[[Optional[TestLoader], Optional[TestSuite], Optional[str]], TestSuite]:
         """
         The helper method for when you use :ref:`unitttest_integration`.
         """

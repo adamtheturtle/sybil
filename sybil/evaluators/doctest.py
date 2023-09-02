@@ -17,7 +17,7 @@ class DocTest(BaseDocTest):
 
 class DocTestRunner(BaseDocTestRunner):
 
-    def __init__(self, optionflags) -> None:
+    def __init__(self, optionflags: int) -> None:
         optionflags |= _unittest_reportflags
         BaseDocTestRunner.__init__(
             self,
@@ -25,7 +25,7 @@ class DocTestRunner(BaseDocTestRunner):
             optionflags=optionflags,
         )
 
-    def _failure_header(self, test, example):
+    def _failure_header(self, test, example) -> str:
         return ''
 
 
@@ -40,7 +40,7 @@ class DocTestEvaluator:
         when evaluating examples.
     """
 
-    def __init__(self, optionflags=0) -> None:
+    def __init__(self, optionflags: int = 0) -> None:
         self.runner = DocTestRunner(optionflags)
 
     def __call__(self, sybil_example: Example) -> str:
