@@ -28,7 +28,7 @@ class DocTestRunner(BaseDocTestRunner):
             optionflags=optionflags,
         )
 
-    def _failure_header(self, test, example) -> str:
+    def _failure_header(self, test, example: Example) -> str:
         return ''
 
 

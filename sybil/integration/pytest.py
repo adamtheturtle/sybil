@@ -131,9 +131,11 @@ class SybilFile(pytest.File):
 
 def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], SybilFile]:
 
-    def pytest_collect_file(file_path: Path, parent: Collector) -> SybilFile:
+    def pytest_collect_file(file_path: Path, parent: Collector) -> Optional[SybilFile]:
+        result: Optional[SybilFile] = None
         for sybil in sybils:
             if sybil.should_parse(file_path):
-                return SybilFile.from_parent(parent, path=file_path, sybil=sybil)
+                result = SybilFile.from_parent(parent, path=file_path, sybil=sybil)
+        return result
 
     return pytest_collect_file
