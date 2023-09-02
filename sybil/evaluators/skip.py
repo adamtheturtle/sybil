@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 from unittest import SkipTest
 
 from sybil import Example
@@ -10,7 +10,7 @@ class If:
     def __init__(self, default_reason: str) -> None:
         self.default_reason = default_reason
 
-    def __call__(self, condition, reason: Optional[str] = None) -> Optional[str]:
+    def __call__(self, condition: Any, reason: Optional[str] = None) -> Optional[str]:
         if condition:
             return reason or self.default_reason
         return None
@@ -21,7 +21,7 @@ class Skip:
     def __init__(self, original_evaluator: Evaluator) -> None:
         self.original_evaluator = original_evaluator
         self.restore_next = False
-        self.reason: Optional[str] = None
+        self.reason: Optional[Exception] = None
 
     def __call__(self, example: Example) -> None:
         document = example.document
