@@ -1,7 +1,7 @@
 import inspect
 import sys
 from pathlib import Path
-from typing import Sequence, Callable, Collection, Mapping, Optional, Type, List
+from typing import Sequence, Callable, Collection, Mapping, Optional, Type, Dict, Any
 from unittest import TestSuite
 from unittest.loader import TestLoader
 
@@ -90,8 +90,8 @@ class Sybil:
         excludes: Sequence[str] = (),
         filenames: Collection[str] = (),
         path: str = '.',
-        setup: Optional[Callable[[dict], None]] = None,
-        teardown: Optional[Callable[[dict], None]] = None,
+        setup: Optional[Callable[[Dict[str, Any]], None]] = None,
+        teardown: Optional[Callable[[Dict[str, Any]], None]] = None,
         fixtures: Sequence[str] = (),
         encoding: str = 'utf-8',
         document_types: Optional[Mapping[Optional[str], Type[Document]]] = None
@@ -110,8 +110,8 @@ class Sybil:
         if exclude:
             self.excludes.append(exclude)
         self.filenames = filenames
-        self.setup: Callable[[dict], None] = setup
-        self.teardown: Callable[[dict], None] = teardown
+        self.setup: Callable[[Dict[str, Any]], None] = setup
+        self.teardown: Callable[[Dict[str, Any]], None] = teardown
         self.fixtures: Sequence[str] = fixtures
         self.encoding: str = encoding
         self.document_types = DEFAULT_DOCUMENT_TYPES.copy()
