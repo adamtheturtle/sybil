@@ -1,6 +1,6 @@
 import re
 import string
-from typing import Iterable, Iterator, Tuple
+from typing import Any, Iterable, Iterator, Tuple
 from textwrap import dedent
 
 from sybil import Region, Document
@@ -28,7 +28,7 @@ def indent_matches(line: str, indent: str) -> bool:
     return False
 
 
-class DocumentReverseIterator(list):
+class DocumentReverseIterator(list[Any]):
 
     def __init__(self, document: Document) -> None:
         self[:] = document.text.splitlines(keepends=True)
