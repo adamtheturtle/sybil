@@ -1,7 +1,7 @@
 from __future__ import print_function
 from functools import partial
 import re
-from typing import Generator
+from typing import Iterator, Generator, Optional
 
 import pytest
 
@@ -37,7 +37,7 @@ def session_fixture() -> Generator[str, None, None]:
     print('session_fixture teardown')
 
 
-def check(letter, example) -> str:
+def check(letter, example) -> Optional[str]:
     namespace = example.namespace
     for name in (
         'x', 'session_fixture', 'module_fixture',
@@ -57,7 +57,7 @@ def check(letter, example) -> str:
         return message
 
 
-def parse_for(letter, document):
+def parse_for(letter, document) -> Iterator[Region]:
     for m in re.finditer(r'(%s+) (\d+) check' % letter, document.text):
         yield Region(m.start(), m.end(),
                      (m.group(1), int(m.group(2))),
