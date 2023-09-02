@@ -7,7 +7,7 @@ from shutil import copytree
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
 from traceback import TracebackException
-from typing import Optional, Tuple, List, Sequence
+from typing import Iterator, Optional, Tuple, List, Sequence
 from unittest import TextTestRunner, main as unittest_main
 
 import pytest
@@ -51,7 +51,7 @@ def parse(name: str, *parsers: Parser, expected: int) -> Tuple[List[Example], di
     return examples, document.namespace
 
 
-def check_excinfo(example: Example, excinfo: ExceptionInfo, text: str, *, lineno: int):
+def check_excinfo(example: Example, excinfo: ExceptionInfo, text: str, *, lineno: int) -> None:
     compare(str(excinfo.value), expected=text)
     details = TracebackException.from_exception(excinfo.value, lookup_lines=False).stack[-1]
     document = example.document
@@ -77,7 +77,7 @@ def check_text(text: str, sybil: Sybil) -> Document:
     return document
 
 
-def check_tree(expected: str, path: str):
+def check_tree(expected: str, path: str) -> None:
     raw = seedir(
         DOCS / path,
         printout=False,
@@ -235,7 +235,7 @@ def write_doctest(tmpdir: local, *path: str) -> Path:
 
 
 @contextmanager
-def add_to_python_path(path: Path):
+def add_to_python_path(path: Path) -> Iterator[None]:
     with import_cleanup():
         sys.path.append(str(path))
         yield
@@ -253,6 +253,6 @@ def ast_docstrings(python_source_code: str) -> Sequence[str]:
                 yield docstring
 
 
-def skip_if_37_or_older():
+def skip_if_37_or_older() -> pytest.mark.structures.MarkDecorator:
     return pytest.mark.skipif(sys.version_info[:2] < (3, 8), reason="requires python3.8 or higher")
 

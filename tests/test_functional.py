@@ -10,7 +10,8 @@ from sybil.parsers.rest import PythonCodeBlockParser, DocTestParser
 from sybil.python import import_cleanup
 from .helpers import (
     run_pytest, run_unittest, PYTEST, run, write_config, UNITTEST, write_doctest,
-    functional_sample, clone_functional_sample, skip_if_37_or_older, check_path, sample_path
+    functional_sample, clone_functional_sample, skip_if_37_or_older, check_path, sample_path,
+    Results,
 )
 
 
@@ -283,7 +284,7 @@ def test_skips(tmpdir: local, capsys: CaptureFixture[str], runner: str) -> None:
     assert results.errors == 0, results.out.text
 
 
-def clone_and_run_modules_tests(tmpdir: local, capsys: CaptureFixture[str], runner: str):
+def clone_and_run_modules_tests(tmpdir: local, capsys: CaptureFixture[str], runner: str) -> Results:
     clone_functional_sample('modules', tmpdir)
     write_config(tmpdir, runner,
                  path="'./modules'",

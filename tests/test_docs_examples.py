@@ -13,11 +13,11 @@ DOC_EXAMPLES = Path(__file__).parent.parent / 'docs' / 'examples'
 
 
 class CollectResults:
-    def pytest_sessionfinish(self, session):
+    def pytest_sessionfinish(self, session: pytest.Session) -> None:
         self.session = session
 
 
-def pytest_in(*path: str):
+def pytest_in(*path: str) -> pytest.Session:
     results = CollectResults()
     return_code = pytest_main([join(DOC_EXAMPLES, *path)], plugins=[results])
     assert return_code == results.session.exitstatus

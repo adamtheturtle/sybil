@@ -1,4 +1,4 @@
-def func(txt: str):
+def func(txt: str) -> str:
     """
     .. code-block:: python
 
