@@ -1,7 +1,7 @@
 from doctest import (
     DocTest as BaseDocTest,
     DocTestRunner as BaseDocTestRunner,
-    _unittest_reportflags,
+    set_unittest_reportflags,
 )
 from typing import List
 
@@ -18,8 +18,11 @@ class DocTest(BaseDocTest):
 class DocTestRunner(BaseDocTestRunner):
 
     def __init__(self, optionflags: int) -> None:
-        optionflags |= _unittest_reportflags
+        old_doctest_unittest_reportflags = set_unittest_reportflags(0)
+        set_unittest_reportflags(old_doctest_unittest_reportflags)
+        optionflags |= old_doctest_unittest_reportflags
         BaseDocTestRunner.__init__(
+
             self,
             verbose=False,
             optionflags=optionflags,
