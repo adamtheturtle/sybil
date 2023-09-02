@@ -1,6 +1,7 @@
 import __future__
 import sys
 from pathlib import Path
+from typing import Any
 
 import pytest
 from testfixtures import compare
@@ -88,7 +89,7 @@ def test_other_language_inheritance() -> None:
     assert str(excinfo.value) == "'KTHXBYE'"
 
 
-def future_import_checks(*future_imports):
+def future_import_checks(*future_imports) -> Any:
     parser = PythonCodeBlockParser(future_imports)
     examples, namespace = parse('codeblock_future_imports.txt', parser, expected=3)
     with pytest.raises(Exception) as excinfo:

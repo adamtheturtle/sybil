@@ -59,7 +59,7 @@ def check_excinfo(example: Example, excinfo: ExceptionInfo, text: str, *, lineno
     assert details.lineno == lineno, f'{details.lineno} != {lineno}'
 
 
-def check_path(path: str, sybil: Sybil, *, expected: int):
+def check_path(path: str, sybil: Sybil, *, expected: int) -> None:
     document = sybil.parse(DOCS / path)
     examples = list(document)
     for example in examples:
@@ -67,7 +67,7 @@ def check_path(path: str, sybil: Sybil, *, expected: int):
     assert len(examples) == expected, len(examples)
 
 
-def check_text(text: str, sybil: Sybil):
+def check_text(text: str, sybil: Sybil) -> Document:
     with NamedTemporaryFile() as temp:
         temp.write(text.encode('ascii'))
         temp.flush()
