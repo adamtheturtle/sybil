@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Any, Callable, Iterator, Tuple, Optional, Union, TYPE_CHECKING
+from typing import Any, Callable, Dict, Iterator, Tuple, Optional, Union, TYPE_CHECKING
 
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
 from _pytest import fixtures
@@ -58,7 +58,7 @@ class SybilItem(pytest.Item):
         initialnames, names_closure, arg2fixturedefs = closure
         fixtureinfo = FuncFixtureInfo(names, initialnames, names_closure, arg2fixturedefs)
         self._fixtureinfo = fixtureinfo
-        self.funcargs = {}
+        self.funcargs: Dict[str, Any] = {}
         self._request = fixtures.FixtureRequest(self, _ispytest=True)
 
     def reportinfo(self) -> Tuple[Union["os.PathLike[str]", str], Optional[int], str]:
@@ -85,19 +85,19 @@ class SybilItem(pytest.Item):
 
         def _traceback_filter(self, excinfo: ExceptionInfo[BaseException]) -> Traceback:
             traceback = excinfo.traceback
-            tb = traceback.cut(path=example_module_path)
-            tb = tb[1]
-            if getattr(tb, '_rawentry', None) is not None:
-                traceback = Traceback(tb._rawentry)
+            traceback_wrapper = traceback.cut(path=example_module_path)
+            traceback_entry = traceback_wrapper[1]
+            if getattr(traceback_entry, '_rawentry', None) is not None:
+                traceback = Traceback(traceback_entry._rawentry)
             return traceback
 
     else:
 
         def _prunetraceback(self, excinfo: ExceptionInfo[BaseException]) -> None:
-            tb = excinfo.traceback.cut(path=example_module_path)
-            tb = tb[1]
-            if getattr(tb, '_rawentry', None) is not None:
-                excinfo.traceback = Traceback(tb._rawentry, excinfo)
+            traceback_wrapper = excinfo.traceback.cut(path=example_module_path)
+            traceback_entry = traceback_wrapper[1]
+            if getattr(traceback_entry, '_rawentry', None) is not None:
+                excinfo.traceback = Traceback(traceback_entry._rawentry, excinfo)
 
     def repr_failure(
         self,
