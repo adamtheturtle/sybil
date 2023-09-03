@@ -30,7 +30,7 @@ example_module_path = abspath(source_file)
 
 class SybilFailureRepr(TerminalRepr):
 
-    def __init__(self, item, message) -> None:
+    def __init__(self, item: 'SybilItem', message: str) -> None:
         self.item = item
         self.message = message
 
@@ -93,7 +93,7 @@ class SybilItem(pytest.Item):
 
     else:
 
-        def _prunetraceback(self, excinfo):
+        def _prunetraceback(self, excinfo: ExceptionInfo[BaseException]) -> None:
             tb = excinfo.traceback.cut(path=example_module_path)
             tb = tb[1]
             if getattr(tb, '_rawentry', None) is not None:
