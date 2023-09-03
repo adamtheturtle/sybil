@@ -51,9 +51,9 @@ class SybilItem(pytest.Item):
         name = 'line:{},column:{}'.format(example.line, example.column)
         super(SybilItem, self).__init__(name, parent)
         self.example = example
-        self.request_fixtures(sybil.fixtures)
+        self.request_fixtures(tuple(sybil.fixtures))
 
-    def request_fixtures(self, names: Sequence[str]) -> None:
+    def request_fixtures(self, names: tuple[str, ...]) -> None:
         # pytest fixtures dance:
         fm = self.session._fixturemanager
         closure = fm.getfixtureclosure(names, self)
