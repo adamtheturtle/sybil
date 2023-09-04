@@ -20,7 +20,7 @@ class DocTestStringParser(BaseDocTestParser):
 
     def __call__(self, string: str, name: str) -> Iterable[Region]:
         """
-        This will yield :class:`sybil.Region` objects for any doctext examples found in
+        This will yield :class:`sybil.Region` objects for any doctest examples found in
         the supplied ``string`` with the :attr:`evaluator` supplied to its constructor
         and the file ``name`` supplied.
 
@@ -40,7 +40,9 @@ class DocTestStringParser(BaseDocTestParser):
                 yield Region(
                     m.start(),
                     m.end(),
-                    DocTestExample(source, want, exc_msg,
+                    DocTestExample(source=source,
+                                   want=want,
+                                   exc_msg=exc_msg,
                                    lineno=lineno,
                                    indent=len(m.group('indent')),
                                    options=options),
