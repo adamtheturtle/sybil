@@ -18,7 +18,7 @@ class If:
 
 class Skip:
 
-    def __init__(self, original_evaluator: Evaluator) -> None:
+    def __init__(self, original_evaluator: Optional[Evaluator]) -> None:
         self.original_evaluator = original_evaluator
         self.restore_next = False
         self.reason: Optional[Exception] = None
