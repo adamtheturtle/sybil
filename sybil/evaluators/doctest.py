@@ -12,7 +12,7 @@ from sybil import Example
 class DocTest(BaseDocTest):
     def __init__(
             self,
-            examples: list[BaseDocTestExample],
+            examples: List[BaseDocTestExample],
             globs: Dict[str, Any],
             name: str,
             filename: Optional[str],
