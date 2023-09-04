@@ -1,15 +1,24 @@
 from doctest import (
     DocTest as BaseDocTest,
     DocTestRunner as BaseDocTestRunner,
+    Example as BaseDocTestExample,
     set_unittest_reportflags,
 )
-from typing import List
+from typing import Any, Dict, List, Optional
 
 from sybil import Example
 
 
 class DocTest(BaseDocTest):
-    def __init__(self, examples, globs, name, filename, lineno, docstring) -> None:
+    def __init__(
+            self,
+            examples: list[BaseDocTestExample],
+            globs: Dict[str, Any],
+            name: str,
+            filename: Optional[str],
+            lineno: Optional[int],
+            docstring: Optional[str],
+        ) -> None:
         # do everything like regular doctests, but don't make a copy of globs
         BaseDocTest.__init__(self, examples, globs, name, filename, lineno, docstring)
         self.globs = globs
