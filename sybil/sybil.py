@@ -1,7 +1,7 @@
 import inspect
 import sys
 from pathlib import Path
-from typing import Sequence, Callable, Collection, Mapping, Optional, Type, Dict, Any
+from typing import Sequence, Callable, Collection, Mapping, Optional, Type, Dict, Any, List
 from unittest import TestSuite
 from unittest.loader import TestLoader
 
@@ -165,7 +165,7 @@ class Sybil:
         return unittest_integration(self)
 
 
-class SybilCollection(list[Sybil]):
+class SybilCollection(List[Sybil]):
     """
     When :class:`Sybil` instances are concatenated, the collection returned can
     be used in the same way as a single :class:`Sybil`.
