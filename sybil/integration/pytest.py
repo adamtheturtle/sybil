@@ -21,6 +21,9 @@ from .. import example
 if TYPE_CHECKING:
     from ..sybil import Sybil
 
+    # Imported here due to circular import, as is done in _pytest.nodes.
+    from _pytest._code.code import _TracebackStyle
+
 PYTEST_VERSION = tuple(int(i) for i in pytest.__version__.split('.'))
 
 source_file = getsourcefile(example)
@@ -105,7 +108,7 @@ class SybilItem(pytest.Item):
     def repr_failure(
         self,
         excinfo: ExceptionInfo[BaseException],
-        style = None,
+        style: "Optional[_TracebackStyle]" = None,
     ) -> Union[str, TerminalRepr]:
         if isinstance(excinfo.value, SybilFailure):
             return SybilFailureRepr(self, str(excinfo.value))
