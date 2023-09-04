@@ -55,6 +55,7 @@ def check(letter, example) -> Optional[str]:
         if letter=='X':
             raise ValueError(message)
         return message
+    return None
 
 
 def parse_for(letter, document) -> Iterator[Region]:
