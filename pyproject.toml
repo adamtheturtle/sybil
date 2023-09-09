@@ -15,15 +15,11 @@ strict = true
 
 module = [
     "sybil.document",
-    "sybil.evaluators.skip",
     "sybil.integration.pytest",
     "sybil.parsers.abstract.codeblock",
     "sybil.parsers.abstract.doctest",
-    "sybil.parsers.myst.codeblock",
     "sybil.parsers.myst.doctest",
-    "sybil.parsers.rest.capture",
     "sybil.parsers.rest.doctest",
-    "sybil.sybil",
 ]
 
 ignore_errors = true
