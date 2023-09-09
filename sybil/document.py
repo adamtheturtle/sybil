@@ -178,6 +178,8 @@ class PythonDocStringDocument(PythonDocument):
             ):
                 continue
             node_start = line_offsets.get(docstring.lineno-1, docstring.col_offset)
+            assert docstring.end_lineno is not None
+            assert docstring.end_col_offset is not None
             node_end = line_offsets.get(docstring.end_lineno-1, docstring.end_col_offset)
             punc = DOCSTRING_PUNCTUATION.match(python_source_code, node_start, node_end)
             assert punc is not None
