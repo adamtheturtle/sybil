@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional
 from unittest import TestCase as BaseTestCase, TestSuite
 from unittest.loader import TestLoader
 
