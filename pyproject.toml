@@ -14,12 +14,12 @@ strict = true
 # have been fully type annotated.
 
 module = [
-    "sybil.document",
-    "sybil.integration.pytest",
-    "sybil.parsers.abstract.codeblock",
-    "sybil.parsers.abstract.doctest",
-    "sybil.parsers.myst.doctest",
-    "sybil.parsers.rest.doctest",
+    # "sybil.document",
+    # "sybil.integration.pytest",
+    # "sybil.parsers.abstract.codeblock",
+    # "sybil.parsers.abstract.doctest",
+    # "sybil.parsers.myst.doctest",
+    # "sybil.parsers.rest.doctest",
 ]
 
 ignore_errors = true

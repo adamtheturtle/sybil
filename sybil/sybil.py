@@ -150,7 +150,7 @@ class Sybil:
         type_ = self.document_types.get(path.suffix, self.default_document_type)
         return type_.parse(str(path), *self.parsers, encoding=self.encoding)
 
-    def pytest(self) -> Callable[[Path, Collector], SybilFile]:
+    def pytest(self) -> Callable[[Path, Collector], Optional[SybilFile]]:
         """
         The helper method for when you use :ref:`pytest_integration`.
         """
@@ -173,7 +173,7 @@ class SybilCollection(List[Sybil]):
     This allows multiple configurations to be used in a single test run.
     """
 
-    def pytest(self) -> Callable[[Path, Collector], SybilFile]:
+    def pytest(self) -> Callable[[Path, Collector], Optional[SybilFile]]:
         """
         The helper method for when you use :ref:`pytest_integration`.
         """

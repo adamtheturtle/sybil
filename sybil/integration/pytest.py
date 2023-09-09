@@ -135,7 +135,7 @@ class SybilFile(pytest.File):
             self.sybil.teardown(self.document.namespace)
 
 
-def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], SybilFile]:
+def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], Optional[SybilFile]]:
 
     def pytest_collect_file(file_path: Path, parent: Collector) -> Optional[SybilFile]:
         result: Optional[SybilFile] = None
