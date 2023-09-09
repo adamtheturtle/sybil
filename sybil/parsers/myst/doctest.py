@@ -23,6 +23,6 @@ class DocTestDirectiveParser(DirectiveLexer):
         for lexed_region in super().__call__(document):
             source = lexed_region.lexemes['source']
             for region in self.string_parser(source, document.path):
-                region.adjust(lexed_region, source)
+                region.adjust(lexed=lexed_region, lexeme=source)
                 yield region
 
