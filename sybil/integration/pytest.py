@@ -103,7 +103,11 @@ class SybilItem(pytest.Item):
             traceback_wrapper = excinfo.traceback.cut(path=example_module_path)
             traceback_entry = traceback_wrapper[1]
             if getattr(traceback_entry, '_rawentry', None) is not None:
-                excinfo.traceback = Traceback(traceback_entry._rawentry, excinfo)
+                # We ignore a type error here because the signature of `Traceback.__init__`
+                # changed between Pytest 7.3.2 and Pytest 7.4.0.
+                # We want to support both, but the type hints during the linting process
+                # are not compatible with both versions.
+                excinfo.traceback = Traceback(traceback_entry._rawentry, excinfo)  # type: ignore[call-arg]
 
     def repr_failure(
         self,
