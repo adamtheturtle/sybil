@@ -35,7 +35,7 @@ class AbstractCodeBlockParser:
         if evaluator is not None:
             self.evaluate = evaluator
 
-    def evaluate(self, example: Example) -> Optional[str]:
+    def evaluate(self, example: Example, /) -> Optional[str]:
         """
         The :any:`Evaluator` used for regions yields by this parser can be provided by
         implementing this method.
