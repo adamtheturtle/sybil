@@ -15,7 +15,7 @@ class DocTestDirectiveParser(DirectiveLexer):
         when evaluating the examples found by this parser.
 
     """
-    def __init__(self, optionflags: int = 0) -> None:
+    def __init__(self, optionflags=0):
         super().__init__('doctest')
         self.string_parser = DocTestStringParser(DocTestEvaluator(optionflags))
 
@@ -23,6 +23,6 @@ class DocTestDirectiveParser(DirectiveLexer):
         for lexed_region in super().__call__(document):
             source = lexed_region.lexemes['source']
             for region in self.string_parser(source, document.path):
-                region.adjust(lexed=lexed_region, lexeme=source)
+                region.adjust(lexed_region, source)
                 yield region
 
