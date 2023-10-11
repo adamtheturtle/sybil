@@ -7,7 +7,7 @@ from shutil import copytree
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
 from traceback import TracebackException
-from typing import Iterator, Optional, Tuple, List, Sequence
+from typing import Optional, Tuple, List, Sequence
 from unittest import TextTestRunner, main as unittest_main
 
 import pytest
@@ -51,7 +51,7 @@ def parse(name: str, *parsers: Parser, expected: int) -> Tuple[List[Example], di
     return examples, document.namespace
 
 
-def check_excinfo(example: Example, excinfo: ExceptionInfo, text: str, *, lineno: int) -> None:
+def check_excinfo(example: Example, excinfo: ExceptionInfo, text: str, *, lineno: int):
     compare(str(excinfo.value), expected=text)
     details = TracebackException.from_exception(excinfo.value, lookup_lines=False).stack[-1]
     document = example.document
@@ -59,7 +59,7 @@ def check_excinfo(example: Example, excinfo: ExceptionInfo, text: str, *, lineno
     assert details.lineno == lineno, f'{details.lineno} != {lineno}'
 
 
-def check_path(path: str, sybil: Sybil, *, expected: int) -> None:
+def check_path(path: str, sybil: Sybil, *, expected: int):
     document = sybil.parse(DOCS / path)
     examples = list(document)
     for example in examples:
@@ -67,7 +67,7 @@ def check_path(path: str, sybil: Sybil, *, expected: int) -> None:
     assert len(examples) == expected, len(examples)
 
 
-def check_text(text: str, sybil: Sybil) -> Document:
+def check_text(text: str, sybil: Sybil):
     with NamedTemporaryFile() as temp:
         temp.write(text.encode('ascii'))
         temp.flush()
@@ -77,7 +77,7 @@ def check_text(text: str, sybil: Sybil) -> Document:
     return document
 
 
-def check_tree(expected: str, path: str) -> None:
+def check_tree(expected: str, path: str):
     raw = seedir(
         DOCS / path,
         printout=False,
@@ -109,19 +109,19 @@ class Finder:
         self.text = text
         self.index = 0
 
-    def then_find(self, substring: str) -> None:
+    def then_find(self, substring):
         assert substring in self.text[self.index:], self.text[self.index:]
         self.index = self.text.index(substring, self.index)
 
-    def assert_present(self, text: str) -> None:
+    def assert_present(self, text):
         assert text in self.text, f'{self.text}\n{self.text!r}'
 
-    def assert_not_present(self, text: str) -> None:
+    def assert_not_present(self, text):
         index = self.text.find(text)
         if index > -1:
             raise AssertionError('\n'+self.text[index-500:index+500])
 
-    def assert_has_run(self, integration: str, file: str, *, line: int = 1, column: int = 1) -> None:
+    def assert_has_run(self, integration: str, file: str, *, line: int = 1, column: int = 1):
         self.assert_present(TEST_OUTPUT_TEMPLATES[integration].format(
             file=file, line=line, column=column
         ))
@@ -235,7 +235,7 @@ def write_doctest(tmpdir: local, *path: str) -> Path:
 
 
 @contextmanager
-def add_to_python_path(path: Path) -> Iterator[None]:
+def add_to_python_path(path: Path):
     with import_cleanup():
         sys.path.append(str(path))
         yield

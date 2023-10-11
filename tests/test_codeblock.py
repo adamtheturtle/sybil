@@ -1,7 +1,6 @@
 import __future__
 import sys
 from pathlib import Path
-from typing import Any
 
 import pytest
 from testfixtures import compare
@@ -15,7 +14,7 @@ from .helpers import check_excinfo, parse, sample_path, check_path, SAMPLE_PATH,
 def test_basic() -> None:
     examples, namespace = parse('codeblock.txt', PythonCodeBlockParser(), expected=7)
     namespace['y'] = namespace['z'] = 0
-    examples[0].evaluate()
+    assert examples[0].evaluate() is None
     assert namespace['y'] == 1
     assert namespace['z'] == 0
     with pytest.raises(Exception) as excinfo:
@@ -23,17 +22,17 @@ def test_basic() -> None:
     compare(examples[1].parsed, expected="raise Exception('boom!')\n", show_whitespace=True)
     assert examples[1].line == 9
     check_excinfo(examples[1], excinfo, 'boom!', lineno=11)
-    examples[2].evaluate()
+    assert examples[2].evaluate() is None
     assert namespace['y'] == 1
     assert namespace['z'] == 1
-    examples[3].evaluate()
+    assert examples[3].evaluate() is None
     assert namespace['bin'] == b'x'
     assert namespace['uni'] == u'x'
-    examples[4].evaluate()
+    assert examples[4].evaluate() is None
     assert 'NoVars' in namespace
-    examples[5].evaluate()
+    assert examples[5].evaluate() is None
     assert namespace['define_this'] == 1
-    examples[6].evaluate()
+    assert examples[6].evaluate() is None
     assert 'YesVars' in namespace
     assert '__builtins__' not in namespace
 
@@ -46,13 +45,7 @@ def test_other_language_composition_pass() -> None:
 
     parser = CodeBlockParser(language='lolcode', evaluator=oh_hai)
     examples, namespace = parse('codeblock.txt', parser, expected=1)
-
-    # We call evaluate() here to make sure that it does not raise an exception.
-    # Though `mypy` authors consider it unnecessary to use the return value of
-    # a method which is typed to return only `None`, we do it here once to have
-    # some safety: https://github.com/python/mypy/issues/6549.
-    result = examples[0].evaluate()  # type: ignore[func-returns-value]
-    assert result is None
+    assert examples[0].evaluate() is None
 
 
 def test_other_language_composition_fail() -> None:
@@ -76,7 +69,7 @@ class LolCodeCodeBlockParser(CodeBlockParser):
 
     language = 'lolcode'
 
-    def evaluate(self, example: Example) -> None:
+    def evaluate(self, example: Example):
         if example.parsed != 'HAI\n':
             raise ValueError(repr(example.parsed))
 
@@ -89,7 +82,7 @@ def test_other_language_inheritance() -> None:
     assert str(excinfo.value) == "'KTHXBYE'"
 
 
-def future_import_checks(*future_imports) -> Any:
+def future_import_checks(*future_imports):
     parser = PythonCodeBlockParser(future_imports)
     examples, namespace = parse('codeblock_future_imports.txt', parser, expected=3)
     with pytest.raises(Exception) as excinfo:

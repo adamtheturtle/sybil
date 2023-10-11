@@ -12,7 +12,7 @@ from .helpers import check_excinfo, parse
 def test_basic() -> None:
     examples, namespace = parse('myst-codeblock.md', PythonCodeBlockParser(), expected=7)
     namespace['y'] = namespace['z'] = 0
-    examples[0].evaluate()
+    assert examples[0].evaluate() is None
     assert namespace['y'] == 1
     assert namespace['z'] == 0
     with pytest.raises(Exception) as excinfo:
@@ -20,17 +20,17 @@ def test_basic() -> None:
     compare(examples[1].parsed, expected="raise Exception('boom!')\n", show_whitespace=True)
     assert examples[1].line == 10
     check_excinfo(examples[1], excinfo, 'boom!', lineno=11)
-    examples[2].evaluate()
+    assert examples[2].evaluate() is None
     assert namespace['y'] == 1
     assert namespace['z'] == 1
-    examples[3].evaluate()
+    assert examples[3].evaluate() is None
     assert namespace['bin'] == b'x'
     assert namespace['uni'] == u'x'
-    examples[4].evaluate()
+    assert examples[4].evaluate() is None
     assert 'NoVars' in namespace
-    examples[5].evaluate()
+    assert examples[5].evaluate() is None
     assert namespace['define_this'] == 1
-    examples[6].evaluate()
+    assert examples[6].evaluate() is None
     assert 'YesVars' in namespace
     assert '__builtins__' not in namespace
 
@@ -38,30 +38,25 @@ def test_basic() -> None:
 def test_doctest_at_end_of_fenced_codeblock() -> None:
     examples, namespace = parse('myst-codeblock-doctests-end-of-fenced-codeblocks.md',
                                 PythonCodeBlockParser(), expected=2)
-    examples[0].evaluate()
-    examples[1].evaluate()
+    assert examples[0].evaluate() is None
+    assert examples[1].evaluate() is None
     assert namespace['b'] == 2
 
 
 def test_other_language_composition_pass() -> None:
 
-    def oh_hai(example: Example) -> None:
+    def oh_hai(example):
         assert isinstance(example, Example)
         assert 'HAI' in example.parsed
 
     parser = CodeBlockParser(language='lolcode', evaluator=oh_hai)
     examples, namespace = parse('myst-codeblock.md', parser, expected=1)
-    # We call evaluate() here to make sure that it does not raise an exception.
-    # Though `mypy` authors consider it unnecessary to use the return value of
-    # a method which is typed to return only `None`, we do it here once to have
-    # some safety: https://github.com/python/mypy/issues/6549.
-    result = examples[0].evaluate()  # type: ignore[func-returns-value]
-    assert result is None
+    assert examples[0].evaluate() is None
 
 
 
 def test_other_language_composition_fail() -> None:
-    def oh_noez(example: Example) -> None:
+    def oh_noez(example):
         if 'KTHXBYE' in example.parsed:
             raise ValueError('oh noez')
 
@@ -81,7 +76,7 @@ class LolCodeCodeBlockParser(CodeBlockParser):
 
     language = 'lolcode'
 
-    def evaluate(self, example: Example) -> None:
+    def evaluate(self, example: Example):
         if example.parsed != 'HAI\n':
             raise ValueError(repr(example.parsed))
 

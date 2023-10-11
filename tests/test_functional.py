@@ -1,5 +1,4 @@
 import sys
-from typing import Generator
 
 import pytest
 from py.path import local
@@ -10,13 +9,12 @@ from sybil.parsers.rest import PythonCodeBlockParser, DocTestParser
 from sybil.python import import_cleanup
 from .helpers import (
     run_pytest, run_unittest, PYTEST, run, write_config, UNITTEST, write_doctest,
-    functional_sample, clone_functional_sample, skip_if_37_or_older, check_path, sample_path,
-    Results,
+    functional_sample, clone_functional_sample, skip_if_37_or_older, check_path, sample_path
 )
 
 
 @pytest.fixture(autouse=True)
-def cleanup_imports() -> Generator[None, None, None]:
+def cleanup_imports():
     with import_cleanup():
         yield
 
@@ -284,7 +282,7 @@ def test_skips(tmpdir: local, capsys: CaptureFixture[str], runner: str) -> None:
     assert results.errors == 0, results.out.text
 
 
-def clone_and_run_modules_tests(tmpdir: local, capsys: CaptureFixture[str], runner: str) -> Results:
+def clone_and_run_modules_tests(tmpdir: local, capsys: CaptureFixture[str], runner: str):
     clone_functional_sample('modules', tmpdir)
     write_config(tmpdir, runner,
                  path="'./modules'",

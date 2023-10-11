@@ -1,7 +1,6 @@
 from __future__ import print_function
 from functools import partial
 import re
-from typing import Iterator, Generator, Optional
 
 import pytest
 
@@ -10,34 +9,34 @@ from sybil.parsers.rest import PythonCodeBlockParser
 
 
 @pytest.fixture(scope="function")
-def function_fixture() -> Generator[str, None, None]:
+def function_fixture():
     print('function_fixture setup')
     yield 'f'
     print(' function_fixture teardown')
 
 
 @pytest.fixture(scope="class")
-def class_fixture() -> Generator[str, None, None]:
+def class_fixture():
     print('class_fixture setup')
     yield 'c'
     print('class_fixture teardown')
 
 
 @pytest.fixture(scope="module")
-def module_fixture() -> Generator[str, None, None]:
+def module_fixture():
     print('module_fixture setup')
     yield 'm'
     print('module_fixture teardown')
 
 
 @pytest.fixture(scope="session")
-def session_fixture() -> Generator[str, None, None]:
+def session_fixture():
     print('session_fixture setup')
     yield 's'
     print('session_fixture teardown')
 
 
-def check(letter, example) -> Optional[str]:
+def check(letter, example):
     namespace = example.namespace
     for name in (
         'x', 'session_fixture', 'module_fixture',
@@ -55,22 +54,21 @@ def check(letter, example) -> Optional[str]:
         if letter=='X':
             raise ValueError(message)
         return message
-    return None
 
 
-def parse_for(letter, document) -> Iterator[Region]:
+def parse_for(letter, document):
     for m in re.finditer(r'(%s+) (\d+) check' % letter, document.text):
         yield Region(m.start(), m.end(),
                      (m.group(1), int(m.group(2))),
                      partial(check, letter))
 
 
-def sybil_setup(namespace) -> None:
+def sybil_setup(namespace):
     print('sybil setup', end=' ')
     namespace['x'] = 0
 
 
-def sybil_teardown(namespace) -> None:
+def sybil_teardown(namespace):
     print('sybil teardown', namespace['x'])
 
 
