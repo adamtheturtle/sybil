@@ -40,9 +40,7 @@ class DocTestStringParser(BaseDocTestParser):
                 yield Region(
                     m.start(),
                     m.end(),
-                    DocTestExample(source=source,
-                                   want=want,
-                                   exc_msg=exc_msg,
+                    DocTestExample(source, want, exc_msg,
                                    lineno=lineno,
                                    indent=len(m.group('indent')),
                                    options=options),
