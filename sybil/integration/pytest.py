@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterator, Sequence, Tuple, Optional, Union, TYPE_CHECKING
+from typing import Any, Callable, Dict, Iterator, Tuple, Optional, Union, TYPE_CHECKING
 
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
 from _pytest import fixtures
@@ -141,7 +141,6 @@ class SybilFile(pytest.File):
 
 def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], Optional[SybilFile]]:
 
-<<<<<<< HEAD
     def pytest_collect_file(file_path: Path, parent: Collector) -> Optional[SybilFile]:
         result: Optional[SybilFile] = None
         for sybil in sybils:
@@ -149,11 +148,5 @@ def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], Optional
                 result = SybilFile.from_parent(parent, path=file_path, sybil=sybil)
         
         return result
-=======
-    def pytest_collect_file(file_path: Path, parent: Collector):
-        for sybil in sybils:
-            if sybil.should_parse(file_path):
-                return SybilFile.from_parent(parent, path=file_path, sybil=sybil)
->>>>>>> upstream/master
 
     return pytest_collect_file
