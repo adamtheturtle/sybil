@@ -15,7 +15,7 @@ from _pytest.nodes import Collector, _NodeType
 from _pytest.python import Module
 import pytest
 
-from ..example import SybilFailure
+from ..example import Example, SybilFailure
 from .. import example
 
 if TYPE_CHECKING:
@@ -50,7 +50,7 @@ class SybilFailureRepr(TerminalRepr):
 
 class SybilItem(pytest.Item):
 
-    def __init__(self, parent: 'SybilFile', sybil: 'Sybil', example: example.Example) -> None:
+    def __init__(self, parent: 'SybilFile', sybil: 'Sybil', example: Example) -> None:
         name = 'line:{},column:{}'.format(example.line, example.column)
         super(SybilItem, self).__init__(name, parent)
         self.example = example
@@ -141,6 +141,7 @@ class SybilFile(pytest.File):
 
 def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], Optional[SybilFile]]:
 
+<<<<<<< HEAD
     def pytest_collect_file(file_path: Path, parent: Collector) -> Optional[SybilFile]:
         result: Optional[SybilFile] = None
         for sybil in sybils:
@@ -148,5 +149,11 @@ def pytest_integration(*sybils: 'Sybil') -> Callable[[Path, Collector], Optional
                 result = SybilFile.from_parent(parent, path=file_path, sybil=sybil)
         
         return result
+=======
+    def pytest_collect_file(file_path: Path, parent: Collector):
+        for sybil in sybils:
+            if sybil.should_parse(file_path):
+                return SybilFile.from_parent(parent, path=file_path, sybil=sybil)
+>>>>>>> upstream/master
 
     return pytest_collect_file
