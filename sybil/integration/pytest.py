@@ -47,11 +47,11 @@ class SybilFailureRepr(TerminalRepr):
 
 class SybilItem(pytest.Item):
 
-    def __init__(self, parent, sybil, example: Example) -> None:
+    def __init__(self, parent, sybil: 'Sybil', example: Example) -> None:
         name = 'line:{},column:{}'.format(example.line, example.column)
         super(SybilItem, self).__init__(name, parent)
         self.example = example
-        self.request_fixtures(sybil.fixtures)
+        self.request_fixtures(tuple(sybil.fixtures))
 
     def request_fixtures(self, names: Tuple[str, ...]) -> None:
         # pytest fixtures dance:
