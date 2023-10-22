@@ -40,5 +40,5 @@ class DocTestDirectiveParser:
         for lexed in self.lexer(document):
             source = lexed.lexemes['source']
             for doctest_region in self.string_parser(source, document.path):
-                doctest_region.adjust(lexed, source)
+                doctest_region.adjust(lexed=lexed, lexeme=source)
                 yield doctest_region

@@ -52,7 +52,7 @@ class SybilItem(pytest.Item):
         self.example = example
         self.request_fixtures(sybil.fixtures)
 
-    def request_fixtures(self, names):
+    def request_fixtures(self, names: Tuple[str, ...]) -> None:
         # pytest fixtures dance:
         fm = self.session._fixturemanager
         closure = fm.getfixtureclosure(names, self)
