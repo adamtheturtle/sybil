@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Any, Callable, Union, TYPE_CHECKING, Tuple, Optional, Iterator
+from typing import Any, Callable, Dict, Union, TYPE_CHECKING, Tuple, Optional, Iterator
 
 import pytest
 from _pytest import fixtures
@@ -59,7 +59,7 @@ class SybilItem(pytest.Item):
         initialnames, names_closure, arg2fixturedefs = closure
         fixtureinfo = FuncFixtureInfo(names, initialnames, names_closure, arg2fixturedefs)
         self._fixtureinfo = fixtureinfo
-        self.funcargs = {}
+        self.funcargs: Dict[str, Any] = {}
         self._request = fixtures.FixtureRequest(self, _ispytest=True)
 
     def reportinfo(self) -> Tuple[Union["os.PathLike[str]", str], Optional[int], str]:
