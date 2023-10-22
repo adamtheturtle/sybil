@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Callable, Union, TYPE_CHECKING, Tuple, Optional, Iterator
+from typing import Any, Callable, Union, TYPE_CHECKING, Tuple, Optional, Iterator
 
 import pytest
 from _pytest import fixtures
@@ -112,7 +112,7 @@ class SybilItem(pytest.Item):
 
 class SybilFile(pytest.File):
 
-    def __init__(self, *, sybil: 'Sybil', **kwargs) -> None:
+    def __init__(self, *, sybil: 'Sybil', **kwargs: Any) -> None:
         super(SybilFile, self).__init__(**kwargs)
         self.sybil: 'Sybil' = sybil
 
