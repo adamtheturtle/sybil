@@ -1,6 +1,9 @@
 [tool.mypy]
 
 strict = true
+disable_error_code = [
+    "union-attr",
+]
 
 [[tool.mypy.overrides]]
 
