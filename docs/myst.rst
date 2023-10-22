@@ -218,7 +218,7 @@ Alternatively, we can create our own parser class and use it as follows:
 Skipping examples
 -----------------
 
-:func:`sybil.parsers.myst.SkipParser` takes advantage of Markdown comments to allow checking of
+:class:`sybil.parsers.myst.SkipParser` takes advantage of Markdown comments to allow checking of
 specified examples to be skipped.
 
 For example:
@@ -226,6 +226,14 @@ For example:
 .. literalinclude:: examples/myst/skip.md
   :language: markdown
   :lines: 1-8
+
+You can also use HTML-style comments:
+
+
+.. literalinclude:: examples/myst/skip.md
+  :language: markdown
+  :lines: 60-67
+
 
 If you need to skip a collection of examples, this can be done as follows:
 
@@ -237,12 +245,29 @@ You can also add conditions to either ``next`` or ``start`` as shown below:
 
 .. literalinclude:: examples/myst/skip.md
   :language: markdown
-  :lines: 27-
+  :lines: 27-38
 
 As you can see, any names used in the expression passed to ``if`` must be
 present in the document's :attr:`~sybil.Document.namespace`.
 :ref:`invisible code blocks <myst-codeblock-parser>`, :class:`setup <sybil.Sybil>`
 methods or :ref:`fixtures <pytest_integration>` are good ways to provide these.
+
+When a condition is used to skip one or more following example, it will be reported as a
+skipped test in your test runner.
+
+If you wish to have unconditional skips show up as skipped tests, this can be done as follows:
+
+
+.. literalinclude:: examples/myst/skip.md
+  :language: markdown
+  :lines: 40-47
+
+This can also be done when skipping collections of examples:
+
+
+.. literalinclude:: examples/myst/skip.md
+  :language: markdown
+  :lines: 49-58
 
 The above examples could be checked with the following configuration:
 
@@ -255,7 +280,12 @@ The above examples could be checked with the following configuration:
 .. invisible-code-block: python
 
   from tests.helpers import check_path
-  check_path('examples/myst/skip.md', sybil, expected=9)
+  check_path(
+      'examples/myst/skip.md',
+      sybil,
+      expected=17,
+      expected_skips=('not yet working', 'Fix in v5', 'Fix in v5'),
+  )
 
 .. _myst-clear-namespace:
 
@@ -280,3 +310,13 @@ The following configuration is required:
 
   from tests.helpers import check_path
   check_path('examples/myst/clear.md', sybil, expected=4)
+
+You can also used HTML-style comments as follows:
+
+.. literalinclude:: examples/myst/clear-html-comment.md
+  :language: rest
+
+.. invisible-code-block: python
+
+  from tests.helpers import check_path
+  check_path('examples/myst/clear-html-comment.md', sybil, expected=4)

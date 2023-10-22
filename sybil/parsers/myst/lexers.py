@@ -77,7 +77,9 @@ class DirectiveLexer(BlockLexer):
 
     """
 
-    def __init__(self, directive: str, arguments: str = '', mapping: Optional[Dict[str, str]] = None) -> None:
+    def __init__(
+            self, directive: str, arguments: str = '.*', mapping: Optional[Dict[str, str]] = None
+    ) -> None:
         super().__init__(
             start_pattern=re.compile(
                 DIRECTIVE_START_TEMPLATE.format(directive=directive, arguments=arguments),
@@ -101,9 +103,9 @@ class DirectiveInPercentCommentLexer(BlockLexer):
 
     .. code-block:: markdown
 
-        ; not-really-a-directive: some-argument
-        ;
-        ;     Source here...
+        % not-really-a-directive: some-argument
+        %
+        %     Source here...
 
     It extracts the following lexemes:
 
@@ -122,7 +124,9 @@ class DirectiveInPercentCommentLexer(BlockLexer):
         Only mapped lexemes will be returned in any :class:`~sybil.LexedRegion` objects.
     """
 
-    def __init__(self, directive: str, arguments: str = '', mapping: Optional[Dict[str, str]] = None) -> None:
+    def __init__(
+            self, directive: str, arguments: str = '.*', mapping: Optional[Dict[str, str]] = None
+    ) -> None:
         super().__init__(
             start_pattern=re.compile(
                 DIRECTIVE_IN_PERCENT_COMMENT_START.format(directive=directive, arguments=arguments),
@@ -134,9 +138,11 @@ class DirectiveInPercentCommentLexer(BlockLexer):
 
 
 DIRECTIVE_IN_HTML_COMMENT_START = (
-    r"^(?P<prefix>[ \t]*)<!---[ \t]*(?P<directive>{directive}):[ \t]*(?P<arguments>{arguments})$\n"
+    r"^(?P<prefix>[ \t]*)<!--+\s*(?:;\s*)?(?P<directive>{directive}):?[ \t]"
+    r"*(?P<arguments>{arguments})[ \t]*"
+    r"(?:$\n|(?=--+>))"
 )
-DIRECTIVE_IN_HTML_COMMENT_END = '(?<=\n){prefix}--->'
+DIRECTIVE_IN_HTML_COMMENT_END = '(?:(?<=\n){prefix})?--+>'
 
 
 class DirectiveInHTMLCommentLexer(BlockLexer):
@@ -169,7 +175,9 @@ class DirectiveInHTMLCommentLexer(BlockLexer):
         Only mapped lexemes will be returned in any :class:`~sybil.LexedRegion` objects.
     """
 
-    def __init__(self, directive: str, arguments: str = '', mapping: Optional[Dict[str, str]] = None) -> None:
+    def __init__(
+            self, directive: str, arguments: str = '.*?', mapping: Optional[Dict[str, str]] = None
+    ) -> None:
         super().__init__(
             start_pattern=re.compile(
                 DIRECTIVE_IN_HTML_COMMENT_START.format(directive=directive, arguments=arguments),

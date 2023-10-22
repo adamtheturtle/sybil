@@ -16,6 +16,14 @@ class Lexeme(str):
     def __init__(self, text: str, offset: int, line_offset: int) -> None:
         self.text, self.offset, self.line_offset = text, offset, line_offset
 
+    def strip_leading_newlines(self) -> 'Lexeme':
+        stripped = self.lstrip('\n')
+        removed = len(self) - len(stripped)
+        return Lexeme(stripped, self.offset + removed, self.line_offset + removed)
+
+
+LexemeMapping = Dict[str, Union[str, Lexeme, Dict[str, str], None]]
+
 
 class LexedRegion:
     """
@@ -29,7 +37,7 @@ class LexedRegion:
         #: The end of this lexed region within the document's :attr:`~sybil.Document.text`.
         self.end: int = end
         #: The lexemes extracted from the region.
-        self.lexemes: Dict[str, Union[str, Lexeme]] = lexemes
+        self.lexemes: LexemeMapping = lexemes
 
     def __repr__(self) -> str:
         lexemes_for_repr = {}
