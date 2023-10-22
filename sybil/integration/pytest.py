@@ -31,7 +31,7 @@ example_module_path = abspath(source_file)
 
 class SybilFailureRepr(TerminalRepr):
 
-    def __init__(self, item, message) -> None:
+    def __init__(self, item: 'SybilItem', message: str) -> None:
         self.item = item
         self.message = message
 
