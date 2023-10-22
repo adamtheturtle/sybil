@@ -13,6 +13,7 @@ from _pytest.fixtures import FuncFixtureInfo
 from _pytest.main import Session
 from _pytest.nodes import Collector
 from _pytest.python import Module
+from _pytest._io import TerminalWriter
 
 from .. import example as example_module
 from ..example import Example
@@ -35,7 +36,7 @@ class SybilFailureRepr(TerminalRepr):
         self.item = item
         self.message = message
 
-    def toterminal(self, tw):
+    def toterminal(self, tw: TerminalWriter) -> None:
         tw.line()
         for line in self.message.splitlines():
             tw.line(line)
