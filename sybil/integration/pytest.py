@@ -98,7 +98,7 @@ class SybilItem(pytest.Item):
 
     else:
 
-        def _prunetraceback(self, excinfo):
+        def _prunetraceback(self, excinfo) -> None:
             tb = excinfo.traceback.cut(path=example_module_path)
             tb = tb[1]
             if getattr(tb, '_rawentry', None) is not None:
