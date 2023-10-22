@@ -18,6 +18,7 @@ from _pytest._io import TerminalWriter
 from .. import example as example_module
 from ..example import Example
 from ..example import SybilFailure
+from _pytest.nodes import Node
 
 if TYPE_CHECKING:
     from ..sybil import Sybil
@@ -49,7 +50,7 @@ class SybilFailureRepr(TerminalRepr):
 
 class SybilItem(pytest.Item):
 
-    def __init__(self, parent, sybil: 'Sybil', example: Example) -> None:
+    def __init__(self, parent: Node, sybil: 'Sybil', example: Example) -> None:
         name = 'line:{},column:{}'.format(example.line, example.column)
         super(SybilItem, self).__init__(name, parent)
         self.example = example
