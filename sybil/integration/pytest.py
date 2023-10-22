@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Union, TYPE_CHECKING, Tuple, Optional
+from typing import Union, TYPE_CHECKING, Tuple, Optional, Iterator
 
 import pytest
 from _pytest import fixtures
@@ -23,7 +23,10 @@ if TYPE_CHECKING:
 
 PYTEST_VERSION = tuple(int(i) for i in pytest.__version__.split('.'))
 
-example_module_path = abspath(getsourcefile(example_module))
+
+source_file = getsourcefile(example_module)
+assert source_file is not None
+example_module_path = abspath(source_file)
 
 
 class SybilFailureRepr(TerminalRepr):
@@ -113,7 +116,7 @@ class SybilFile(pytest.File):
         super(SybilFile, self).__init__(**kwargs)
         self.sybil: 'Sybil' = sybil
 
-    def collect(self):
+    def collect(self) -> Iterator[SybilItem]:
         self.document = self.sybil.parse(Path(self.fspath.strpath))
         for example in self.document:
             yield SybilItem.from_parent(self, sybil=self.sybil, example=example)
