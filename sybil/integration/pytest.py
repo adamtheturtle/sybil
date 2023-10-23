@@ -91,9 +91,9 @@ class SybilItem(pytest.Item):
         def _traceback_filter(self, excinfo: ExceptionInfo[BaseException]) -> Traceback:
             traceback = excinfo.traceback
             tb = traceback.cut(path=example_module_path)
-            tb = tb[1]
-            if getattr(tb, '_rawentry', None) is not None:
-                traceback = Traceback(tb._rawentry)
+            tb_entry = tb[1]
+            if getattr(tb_entry, '_rawentry', None) is not None:
+                traceback = Traceback(tb_entry._rawentry)
             return traceback
 
     else:
