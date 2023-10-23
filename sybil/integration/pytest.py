@@ -105,7 +105,9 @@ class SybilItem(pytest.Item):
             tb = excinfo.traceback.cut(path=example_module_path)
             tb = tb[1]
             if getattr(tb, '_rawentry', None) is not None:
-                excinfo.traceback = Traceback(tb._rawentry, excinfo)
+                # Ignore a type error here because the typing check is done with pytest >= 3.4.0
+                # and this code is only executed with pytest < 3.4.0.
+                excinfo.traceback = Traceback(tb._rawentry, excinfo)  # type: ignore[call-arg]
 
     def repr_failure(
         self,
