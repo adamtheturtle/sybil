@@ -4,7 +4,7 @@ import os
 from inspect import getsourcefile
 from os.path import abspath
 from pathlib import Path
-from typing import Any, Callable, Dict, Union, TYPE_CHECKING, Tuple, Optional, Iterator
+from typing import Any, Callable, Dict, Union, TYPE_CHECKING, Tuple, Type, Optional, Iterator, TypeVar
 
 import pytest
 from _pytest import fixtures
@@ -19,6 +19,8 @@ from .. import example as example_module
 from ..example import Example
 from ..example import SybilFailure
 from _pytest.nodes import Node
+
+_NodeType = TypeVar("_NodeType", bound="Node")
 
 if TYPE_CHECKING:
     from ..sybil import Sybil
@@ -72,11 +74,12 @@ class SybilItem(pytest.Item):
         )
         return self.example.path, self.example.line, info
 
-    def getparent(self, cls):
+    def getparent(self, cls: Type[_NodeType]) -> Optional[_NodeType]:
         if cls is Module:
             return self.parent
         if cls is Session:
             return self.session
+        return None
 
     def setup(self) -> None:
         self._request._fillfixtures()
