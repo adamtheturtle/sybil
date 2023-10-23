@@ -101,13 +101,13 @@ class SybilItem(pytest.Item):
 
     else:
 
-        def _prunetraceback(self, excinfo) -> None:
+        def _prunetraceback(self, excinfo: ExceptionInfo[BaseException]) -> None:
             tb = excinfo.traceback.cut(path=example_module_path)
-            tb = tb[1]
-            if getattr(tb, '_rawentry', None) is not None:
+            tb_entry = tb[1]
+            if getattr(tb_entry, '_rawentry', None) is not None:
                 # Ignore a type error here because the typing check is done with pytest >= 3.4.0
                 # and this code is only executed with pytest < 3.4.0.
-                excinfo.traceback = Traceback(tb._rawentry, excinfo)  # type: ignore[call-arg]
+                excinfo.traceback = Traceback(tb_entry._rawentry, excinfo)  # type: ignore[call-arg]
 
     def repr_failure(
         self,
