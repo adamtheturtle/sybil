@@ -9,6 +9,7 @@ from typing import Any, Callable, Dict, Union, TYPE_CHECKING, Tuple, Type, Optio
 import pytest
 from _pytest import fixtures
 from _pytest._code.code import TerminalRepr, Traceback, ExceptionInfo
+from _pytest._io import TerminalWriter
 from _pytest.fixtures import FuncFixtureInfo
 from _pytest.main import Session
 from _pytest.nodes import Collector
