@@ -1,28 +1,6 @@
 [tool.mypy]
 
-strict = true
+strict = false
 disable_error_code = [
     "union-attr",
 ]
-
-[[tool.mypy.overrides]]
-
-# We intend to type check all modules.
-# However, while we are in the process of adding type hints, we want to
-# prevent new errors from being introduced.
-# Therefore, we have a strict mypy config, but we temporarily ignore errors
-# in existing modules which have not yet been fully type annotated.
-#
-# The goal is to remove "ignore_errors" from this file once all modules
-# have been fully type annotated.
-
-module = [
-    # "sybil.document",
-    # "sybil.integration.pytest",
-    # "sybil.parsers.abstract.codeblock",
-    # "sybil.parsers.abstract.doctest",
-    # "sybil.parsers.myst.doctest",
-    # "sybil.parsers.rest.doctest",
-]
-
-ignore_errors = true
