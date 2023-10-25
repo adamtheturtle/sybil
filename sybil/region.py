@@ -28,7 +28,7 @@ class LexedRegion:
     parsed or assigned an :any:`Evaluator`.
     """
 
-    def __init__(self, start: int, end: int, lexemes: LexemeMapping) -> None:
+    def __init__(self, start: int, end: int, lexemes: Dict[str, Union[str, Lexeme]]) -> None:
         #: The start of this lexed region within the document's :attr:`~sybil.Document.text`.
         self.start: int = start
         #: The end of this lexed region within the document's :attr:`~sybil.Document.text`.
