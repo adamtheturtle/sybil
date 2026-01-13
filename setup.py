@@ -26,6 +26,7 @@ setup(
     packages=find_packages(exclude=['tests', 'functional_tests']),
     package_data={"sybil": ["py.typed"]},
     python_requires=">=3.9",
+    install_requires=['markdown-it-py'],
     extras_require=dict(
         pytest=[PYTEST_VERSION_SPEC],
         test=[
