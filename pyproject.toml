@@ -31,7 +31,7 @@ dev = [
     "pytest-cov>=6",
     "ruff>=0.15.7",
     "seedir",
-    "testfixtures>=11",
+    "testfixtures>=12.0.0",
     "types-PyYAML",
 ]
 docs = [
