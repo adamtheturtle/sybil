@@ -52,3 +52,4 @@ Config: `pyproject.toml`. Optional dep: `pytest` extra for pytest integration.
 - Coverage tracks both `sybil` package and `tests` directory
 - The project dogfoods itself — sybil is used to test its own documentation examples via `conftest.py`
 - `ShouldAssert` strings in `tests/test_testing.py` may include hardcoded line numbers — this fragility is intentional; update the number, don't work around it
+- Ruff is used only as a **formatter** (`ruff format`) — CI and `happy.sh` never run `ruff check`, so its lint findings do not gate. Don't go "fixing" them. `docs/examples` and `tests/samples` are excluded from ruff because they hold deliberately quirky Python inside markdown fences
