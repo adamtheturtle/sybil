@@ -66,6 +66,9 @@ ignore_errors = true
 
 [tool.ruff]
 line-length = 100
+# Fixtures and doc examples contain deliberately quirky Python inside markdown
+# code fences; ruff 0.16 formats those, which would defeat what they test.
+extend-exclude = ["docs/examples", "tests/samples"]
 
 [tool.ruff.format]
 quote-style = "preserve"
