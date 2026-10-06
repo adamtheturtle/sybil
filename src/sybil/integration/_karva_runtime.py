@@ -6,7 +6,6 @@ from importlib import import_module
 from pathlib import Path
 from unittest import SkipTest
 
-from karva import skip
 from sybil import Document, Example, Sybil
 from sybil.sybil import SybilCollection
 
@@ -59,6 +58,8 @@ class DocumentTests:
         try:
             example.evaluate()
         except SkipTest as error:
+            from karva import skip
+
             skip(reason=str(object=error))
 
 

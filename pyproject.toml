@@ -78,6 +78,8 @@ quote-style = "preserve"
 source = ["sybil", "tests"]
 
 [tool.coverage.report]
+# Karva subprocess tests execute temporary example projects, not shipped sources.
+omit = ["*/pytest-*/*"]
 exclude_lines = [
     "pragma: no cover",
     "if TYPE_CHECKING:",
