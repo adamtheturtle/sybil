@@ -164,6 +164,16 @@ class Sybil:
 
         return pytest_integration(self)
 
+    def karva(
+        self, *, reference: str, paths: Sequence[Path], destination: Path
+    ) -> tuple[Path, ...]:
+        """Generate native tests for the experimental :ref:`karva_integration`."""
+        from .integration.karva import karva_integration
+
+        return karva_integration(
+            sybils=(self,), reference=reference, paths=paths, destination=destination
+        )
+
     def unittest(self) -> Callable[[Any, Any, Optional[str]], Any]:
         """
         The helper method for when you use :ref:`unitttest_integration`.
@@ -188,6 +198,16 @@ class SybilCollection(List[Sybil]):
         from .integration.pytest import pytest_integration
 
         return pytest_integration(*self)
+
+    def karva(
+        self, *, reference: str, paths: Sequence[Path], destination: Path
+    ) -> tuple[Path, ...]:
+        """Generate native tests for the experimental :ref:`karva_integration`."""
+        from .integration.karva import karva_integration
+
+        return karva_integration(
+            sybils=self, reference=reference, paths=paths, destination=destination
+        )
 
     def unittest(self) -> Callable[[Any, Any, Optional[str]], Any]:
         """

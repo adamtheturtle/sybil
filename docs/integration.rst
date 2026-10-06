@@ -99,3 +99,54 @@ which are both called with the :class:`~sybil.Document`
 :class:`~sybil.Document.namespace`.
 
 The ``fixtures`` parameter is ignored.
+
+.. _karva_integration:
+
+Karva (experimental)
+--------------------
+
+Install Sybil with the ``karva`` extra to use this integration.
+Karva currently collects Python source definitions, so this integration generates
+native Python modules before the run instead of installing a collection hook.
+
+Export a ``Sybil`` or ``SybilCollection`` from an importable module, such as
+``conftest.py``.
+Call :meth:`~sybil.Sybil.karva` with ``reference='conftest:sybil'``, explicit documentation
+``paths``, and an empty ``destination`` directory inside the project.
+The reference must name the same configuration on which the method is called.
+The return value is a tuple of generated module paths.
+The :func:`~sybil.integration.karva.generate_karva_tests` helper accepts the same
+arguments when loading the configuration solely from its reference is convenient.
+
+Run ``uv run karva test <destination>`` from the project root while the generated
+modules exist.
+Using a temporary directory inside the project keeps ancestor ``conftest.py``
+fixtures available and permits automatic removal of the generated files.
+Specify source paths explicitly rather than traversing a virtual environment.
+
+Each document becomes one module with one dynamically parametrized test function.
+Each example is reported separately, in source order, in the same worker as the
+other examples from that document.
+The document namespace, setup and teardown callbacks, function fixture injection,
+module fixture lifetime, skip behavior, and cleanup after example failures are
+preserved.
+``unittest.SkipTest`` is translated into a native Karva skip.
+Parser and evaluator implementations do not need to change.
+
+This is experimental and does not yet provide full parity with :meth:`~sybil.Sybil.pytest`.
+Collection members must select disjoint files.
+Overlapping configurations are rejected rather than changing module fixture
+lifetimes for the same file.
+Fixture names must be Python identifiers other than ``_sybil_example`` and
+``_sybil_document``.
+Karva's primary diagnostic points to the generated wrapper, although the example
+identifier and Sybil failure include the original document path, line and column.
+Temporary paths prevent useful reuse of test history across runs.
+Selecting a later example does not recreate the namespace established by earlier
+examples, and retries may repeat namespace mutations.
+Use complete document runs without retries while testing this integration, and
+keep your existing runner validation alongside the Karva run.
+Native source reporting is tracked in
+`Karva issue 1513 <https://github.com/MatthewMckee4/karva/issues/1513>`_.
+
+.. autofunction:: sybil.integration.karva.generate_karva_tests

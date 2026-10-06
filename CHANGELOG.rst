@@ -1,6 +1,12 @@
 Changes
 =======
 
+Next release
+------------
+
+- Add an experimental :meth:`~sybil.Sybil.karva` integration that generates native
+  Karva tests with a separate result per example and a shared namespace per document.
+
 10.1.0 (13 Jun 2026)
 --------------------
 

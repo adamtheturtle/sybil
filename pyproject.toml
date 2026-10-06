@@ -21,6 +21,7 @@ Changelog = "https://sybil.readthedocs.io/en/latest/changes.html"
 
 [project.optional-dependencies]
 pytest = ["pytest>=8"]
+karva = ["karva==0.0.1a12"]
 myst = ["pyyaml>=6.0.3"]
 
 [dependency-groups]
